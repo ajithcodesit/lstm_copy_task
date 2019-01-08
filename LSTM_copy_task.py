@@ -194,9 +194,9 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 
 
 if __name__ == '__main__':
-	# train_lstm_seq(batch_size=batch_size,stop_at=stop_at,
-	# 			   max_seq=seq_len,min_seq=1,
-	# 			   in_bits=in_bits, out_bits=out_bits)
+	train_lstm_seq(batch_size=batch_size,stop_at=stop_at,
+				   max_seq=seq_len,min_seq=1,
+				   in_bits=in_bits, out_bits=out_bits)
 	
 	predictions_lstm_seq(max_seq=seq_len,min_seq=1,
 						 in_bits=in_bits,out_bits=out_bits)
