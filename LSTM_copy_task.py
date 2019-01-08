@@ -12,6 +12,7 @@ TRAIN_VIS_PATH="./tensor_board/"
 
 batch_size = 100
 stop_at = 0.0080
+
 seq_len = 20
 bits=8 # The actual vector size for copying task
 in_bits = bits+2 # The extra side track
