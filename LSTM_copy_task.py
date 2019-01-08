@@ -11,7 +11,7 @@ MODEL_PATH="./saved_model/"+MODEL_NAME
 TRAIN_VIS_PATH="./tensor_board/"
 
 batch_size = 100
-stop_at = 0.0080
+stop_at = 0.0080  # End training at required loss
 
 seq_len = 20
 bits=8 # The actual vector size for copying task
@@ -24,7 +24,6 @@ grad_clip=10
 act_seq_len = (seq_len*2)+2 # Actual sequence lenght which includes the delimiters (Start and Stop bits on the side tracks)
 no_hidden = [256,256,256] # No of LSTM layer and units per layer
 
-# Defining the model
 # Data and target place holder definition
 # Data input is in [batch size, sequence length/time step, input dimension], batch major
 data = tf.placeholder(dtype=tf.float32, shape=[None,act_seq_len,in_bits]) # Input
