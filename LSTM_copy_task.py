@@ -16,21 +16,24 @@ def generate_patterns(no_of_samples=100, max_sequence=20, min_sequence=1, in_bit
 	ti = []
 	to = []
 
-	for i in range(no_of_samples):
+	for _ in xrange(no_of_samples):
 		
 		seq_len_row = np.random.randint(low=min_sequence,high=max_sequence+1)
 
 		pat = np.random.randint(low=0, high=2, size=(seq_len_row,out_bits))
 		pat = pat.astype(np.float32)
+		
+		# Applying tolerance (So that values don't go to zero and cause NaN errors)
 		pat[pat < 1] = low_tol
 		pat[pat >= 1] = high_tol
 
+		# Padding can be added if needed
 		x = np.ones(((max_sequence*2)+2,in_bits), dtype=pat.dtype) * pad
 		y = np.ones(((max_sequence*2)+2,out_bits), dtype=pat.dtype) * pad # Side tracks are not produced
 
 		# Creates a delayed output (Target delay)
 		x[1:seq_len_row+1,2:] = pat
-		y[seq_len_row+2:(2*seq_len_row)+2,:] = pat # No side tracks needed for the output (max_row+2)-seq_len_row
+		y[seq_len_row+2:(2*seq_len_row)+2,:] = pat # No side tracks needed for the output
 
 		x[1:seq_len_row+1,0:2] = low_tol
 		x[0,:] = low_tol
