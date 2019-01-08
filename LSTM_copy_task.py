@@ -59,8 +59,7 @@ saver = tf.train.Saver()
 train_summary = tf.summary.scalar("Training loss",cross_entropy)
 
 
-def generate_patterns(no_of_samples=100, max_sequence=20, min_sequence=1, in_bits=10, out_bits=8, 
-					 pad=0.001, low_tol=0.001, high_tol=1.0):  # Function to generate sequences of different lengths
+def generate_patterns(no_of_samples=100,max_sequence=20,min_sequence=1,in_bits=10,out_bits=8,pad=0.001,low_tol=0.001,high_tol=1.0):  # Function to generate sequences of different lengths
 	
 	ti = []
 	to = []
@@ -114,9 +113,7 @@ def train_lstm_seq(batch_size=100,max_epoch=1000,stop_at=0.0080,max_seq=20,min_s
 					break
 
 				for j in range(1000): # 100k examples per epoch
-					t_inp, t_out = generate_patterns(no_of_samples=batch_size,
-													max_sequence=max_seq, min_sequence=min_seq,
-													in_bits=in_bits, out_bits=out_bits)
+					t_inp, t_out = generate_patterns(no_of_samples=batch_size,max_sequence=max_seq,min_sequence=min_seq,in_bits=in_bits,out_bits=out_bits)
 
 					_, train_loss, train_error, ts = sess.run([minimizer,cross_entropy,error,train_summary],{data: t_inp, target: t_out})
 
@@ -146,9 +143,7 @@ def train_lstm_seq(batch_size=100,max_epoch=1000,stop_at=0.0080,max_seq=20,min_s
 		total_test_err = 0.0
 
 		for _ in range(100): #10k examples per epoch
-			tst_inp, tst_out = generate_patterns(no_of_samples=batch_size,
-												max_sequence=20, min_sequence=1,
-												in_bits=10, out_bits=8)
+			tst_inp, tst_out = generate_patterns(no_of_samples=batch_size,max_sequence=20,min_sequence=1,in_bits=10,out_bits=8)
 
 			lss, err = sess.run([cross_entropy,error],{data:tst_inp, target:tst_out})
 
@@ -174,9 +169,7 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 		saver.restore(sess,MODEL_PATH)
 		print("Model restored")
 		
-		x, _ = generate_patterns(no_of_samples=1, 
-								max_sequence=max_seq, min_sequence=min_seq,
-								in_bits=in_bits, out_bits=out_bits)
+		x, _ = generate_patterns(no_of_samples=1,max_sequence=max_seq,min_sequence=min_seq,in_bits=in_bits,out_bits=out_bits)
 		
 		y = sess.run(prediction,{data:x})
 
@@ -196,9 +189,6 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 
 
 if __name__ == '__main__':
-	train_lstm_seq(batch_size=batch_size,stop_at=stop_at,
-					max_seq=seq_len,min_seq=1,
-					in_bits=in_bits, out_bits=out_bits)
+	train_lstm_seq(batch_size=batch_size,stop_at=stop_at,max_seq=seq_len,min_seq=1,in_bits=in_bits,out_bits=out_bits)
 	
-	predictions_lstm_seq(max_seq=seq_len,min_seq=1,
-						in_bits=in_bits,out_bits=out_bits)
+	predictions_lstm_seq(max_seq=seq_len,min_seq=1,in_bits=in_bits,out_bits=out_bits)
