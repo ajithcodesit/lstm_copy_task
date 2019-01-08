@@ -5,10 +5,10 @@ import numpy as np
 import tensorflow as tf
 import os
 
-MODEL_NAME="lstm_seq_model.ckpt"
-MODEL_PATH=os.path.expanduser("~/TensorBoard/Models/")+MODEL_NAME
+MODEL_NAME="lstm_copy_model.ckpt"
+MODEL_PATH="./saved_model/"+MODEL_NAME
 
-TRAIN_VIS_PATH=os.path.expanduser("~/TensorBoard/")
+TRAIN_VIS_PATH="./tensor_board/"
 
 def generate_pattern(max_sequence=20, min_sequence=1,in_bits=10, out_bits=8, 
 					pad=0.001, low_tol=0.001, high_tol=1.0):  # Function to generate sequences of different lengths
