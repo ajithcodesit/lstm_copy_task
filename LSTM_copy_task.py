@@ -16,7 +16,7 @@ def generate_patterns(no_of_samples=100, max_sequence=20, min_sequence=1, in_bit
 	ti = []
 	to = []
 
-	for _ in xrange(no_of_samples):
+	for _ in range(no_of_samples):
 		
 		seq_len_row = np.random.randint(low=min_sequence,high=max_sequence+1)
 
