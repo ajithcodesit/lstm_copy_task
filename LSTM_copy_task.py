@@ -115,8 +115,8 @@ def train_lstm_seq(batch_size=100,max_epoch=1000,stop_at=0.0080,max_seq=20,min_s
 
 				for j in range(1000): # 100k examples per epoch
 					t_inp, t_out = generate_patterns(no_of_samples=batch_size,
-													 max_sequence=max_seq, min_sequence=min_seq,
-													 in_bits=in_bits, out_bits=out_bits)
+													max_sequence=max_seq, min_sequence=min_seq,
+													in_bits=in_bits, out_bits=out_bits)
 
 					_, train_loss, train_error, ts = sess.run([minimizer,cross_entropy,error,train_summary],{data: t_inp, target: t_out})
 
@@ -146,7 +146,9 @@ def train_lstm_seq(batch_size=100,max_epoch=1000,stop_at=0.0080,max_seq=20,min_s
 		total_test_err = 0.0
 
 		for _ in range(100): #10k examples per epoch
-			tst_inp, tst_out = generate_patterns(no_of_samples=batch_size,max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
+			tst_inp, tst_out = generate_patterns(no_of_samples=batch_size,
+												max_sequence=20, min_sequence=1,
+												in_bits=10, out_bits=8)
 
 			lss, err = sess.run([cross_entropy,error],{data:tst_inp, target:tst_out})
 
@@ -173,8 +175,8 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 		print("Model restored")
 		
 		x, _ = generate_patterns(no_of_samples=1, 
-								 max_sequence=max_seq, min_sequence=min_seq,
-								 in_bits=in_bits, out_bits=out_bits)
+								max_sequence=max_seq, min_sequence=min_seq,
+								in_bits=in_bits, out_bits=out_bits)
 		
 		y = sess.run(prediction,{data:x})
 
@@ -187,16 +189,16 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 		p=ax2.matshow(y[0].T,aspect='auto',cmap=cmap)
 		ax2.set_ylabel("Prediction")
 
-		fig.suptitle('LSTM Copy Task')
-		fig.colorbar(p,ax=(ax1,ax2),orientation='vertical',fraction=0.1)
+		fig.suptitle('LSTM Copy Task (Max Sequence Length {})'.format(max_seq))
+		fig.colorbar(p,ax=(ax1,ax2),orientation="vertical",fraction=0.1)
 
 		plt.show()
 
 
 if __name__ == '__main__':
 	train_lstm_seq(batch_size=batch_size,stop_at=stop_at,
-				   max_seq=seq_len,min_seq=1,
-				   in_bits=in_bits, out_bits=out_bits)
+					max_seq=seq_len,min_seq=1,
+					in_bits=in_bits, out_bits=out_bits)
 	
 	predictions_lstm_seq(max_seq=seq_len,min_seq=1,
-						 in_bits=in_bits,out_bits=out_bits)
+						in_bits=in_bits,out_bits=out_bits)
