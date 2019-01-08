@@ -10,43 +10,36 @@ MODEL_PATH="./saved_model/"+MODEL_NAME
 
 TRAIN_VIS_PATH="./tensor_board/"
 
-def generate_pattern(max_sequence=20, min_sequence=1,in_bits=10, out_bits=8, 
-					pad=0.001, low_tol=0.001, high_tol=1.0):  # Function to generate sequences of different lengths
-
-	seq_len_row = np.random.randint(low=min_sequence,high=max_sequence+1)
-
-	pat = np.random.randint(low=0, high=2, size=(seq_len_row,out_bits))
-	pat = pat.astype(np.float32)
-	pat[pat < 1] = low_tol
-	pat[pat >= 1] = high_tol
-
-	x = np.ones(((max_sequence*2)+2,in_bits), dtype=pat.dtype) * pad
-	y = np.ones(((max_sequence*2)+2,out_bits), dtype=pat.dtype) * pad # Side tracks are not produced
-
-	# Creates a delayed output (Target delay)
-	x[1:seq_len_row+1,2:] = pat
-	y[seq_len_row+2:(2*seq_len_row)+2,:] = pat # No side tracks needed for the output (max_row+2)-seq_len_row
-
-	x[1:seq_len_row+1,0:2] = low_tol
-	x[0,:] = low_tol
-	x[0,1] = 1.0 # Start of sequence
-	x[seq_len_row+1,:] = low_tol
-	x[seq_len_row+1,0] = 1.0 # End of sequence
-
-	return x, y, pat
-
-def create_training_data(no_of_examples=100,max_sequence=20, min_sequence=1,in_bits=10, out_bits=8, 
-					pad=0.001, low_tol=0.001, high_tol=1.0):  # Function to generate the training data
-
+def generate_patterns(no_of_samples=100, max_sequence=20, min_sequence=1, in_bits=10, out_bits=8, 
+					 pad=0.001, low_tol=0.001, high_tol=1.0):  # Function to generate sequences of different lengths
+	
 	ti = []
 	to = []
 
-	for i in range(no_of_examples):
-		x, y, _ = generate_pattern(max_sequence, min_sequence,in_bits, out_bits, 
-									pad, low_tol, high_tol)
+	for i in range(no_of_samples):
+		
+		seq_len_row = np.random.randint(low=min_sequence,high=max_sequence+1)
+
+		pat = np.random.randint(low=0, high=2, size=(seq_len_row,out_bits))
+		pat = pat.astype(np.float32)
+		pat[pat < 1] = low_tol
+		pat[pat >= 1] = high_tol
+
+		x = np.ones(((max_sequence*2)+2,in_bits), dtype=pat.dtype) * pad
+		y = np.ones(((max_sequence*2)+2,out_bits), dtype=pat.dtype) * pad # Side tracks are not produced
+
+		# Creates a delayed output (Target delay)
+		x[1:seq_len_row+1,2:] = pat
+		y[seq_len_row+2:(2*seq_len_row)+2,:] = pat # No side tracks needed for the output (max_row+2)-seq_len_row
+
+		x[1:seq_len_row+1,0:2] = low_tol
+		x[0,:] = low_tol
+		x[0,1] = 1.0 # Start of sequence
+		x[seq_len_row+1,:] = low_tol
+		x[seq_len_row+1,0] = 1.0 # End of sequence
 
 		ti.append(x)
-		to.append(y) # The pattern with the two extra padded column is used
+		to.append(y)
 
 	return ti, to
 
@@ -95,7 +88,6 @@ init_op = tf.initializers.global_variables()
 saver = tf.train.Saver()
 
 train_summary = tf.summary.scalar("Training loss",cross_entropy)
-val_summary = tf.summary.scalar("Validation loss",cross_entropy)
 
 def train_lstm_seq():
 
@@ -116,7 +108,7 @@ def train_lstm_seq():
 					break
 
 				for j in range(1000):
-					t_inp, t_out = create_training_data(no_of_examples=batch_size,max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
+					t_inp, t_out = generate_patterns(no_of_samples=batch_size,max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
 
 					_, train_loss, train_error, ts = sess.run([minimizer,cross_entropy,error,train_summary],{data: t_inp, target: t_out})
 
@@ -146,7 +138,7 @@ def train_lstm_seq():
 		total_test_err = 0.0
 
 		for l in range(100):
-			tst_inp, tst_out = create_training_data(no_of_examples=batch_size,max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
+			tst_inp, tst_out = generate_patterns(no_of_samples=batch_size,max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
 
 			lss, err = sess.run([cross_entropy,error],{data:tst_inp, target:tst_out})
 
@@ -171,11 +163,11 @@ def predictions_lstm_seq():
 		saver.restore(sess,MODEL_PATH)
 		print("Model restored")
 		
-		x, _, _ = generate_pattern(max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
+		x, _ = generate_patterns(no_of_samples=1, max_sequence=20, min_sequence=1,in_bits=10, out_bits=8)
 		
-		y = sess.run(act_prediction,{data:[x]})
+		y = sess.run(act_prediction,{data:x})
 
-		plt.matshow(x)
+		plt.matshow(x[0])
 		plt.matshow(y[0])
 		plt.show()
 
