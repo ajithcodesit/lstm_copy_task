@@ -106,7 +106,7 @@ def train_lstm_seq(batch_size=100,max_epoch=1000,stop_at=0.0080,max_seq=20,min_s
 
 		print("Training")
 
-		for i in range(epoch):
+		for i in range(max_epoch):
 			try:
 
 				if stop is True:
@@ -183,7 +183,7 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 		ax2.set_ylabel("Prediction")
 
 		fig.suptitle('LSTM Copy Task (Max Sequence Length {})'.format(max_seq))
-		fig.colorbar(p,ax=(ax1,ax2),orientation="vertical",fraction=0.1)
+		fig.colorbar(t,ax=(ax1,ax2),orientation="vertical",fraction=0.1)
 
 		plt.show()
 
