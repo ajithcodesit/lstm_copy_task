@@ -21,7 +21,7 @@ Target delay was used in which the target sequence is presented only after the i
 The following are the sequence copy attempts done by the LSTM network at sequence lengths of 10, 20, 40 and 120. Both target (top) and prediction (bottom) is shown.
 
 ##### Sequence length 10 
-![alt text](/images/seq_len_10.png "seq_len=10" =640x)
+![alt text](lstm_copy_task/images/seq_len_10.png "seq_len=10" =640x)
 ##### Sequence length 20
 ![alt text](/images/seq_len_20.png "seq_len=20" =640x)
 ##### Sequence length 40
