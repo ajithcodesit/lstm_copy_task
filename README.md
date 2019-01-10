@@ -21,13 +21,13 @@ Target delay was used in which the target sequence is presented only after the i
 The following are the sequence copy attempts done by the LSTM network at sequence lengths of 10, 20, 40 and 120. Both target (top) and prediction (bottom) is shown.
 
 ##### Sequence length 10 
-![](https://github.com/thehardwayguy/lstm_copy_task/blob/master/resources/seq_len_10.png?raw=true "seq_len=10" =640x)
+![](/resources/seq_len_10.png "seq_len=10" =640x)
 ##### Sequence length 20
-![](https://github.com/thehardwayguy/lstm_copy_task/blob/master/resources/seq_len_20.png?raw=true "seq_len=20" =640x)
+![](/resources/seq_len_20.png "seq_len=20" =640x)
 ##### Sequence length 40
-![](https://github.com/thehardwayguy/lstm_copy_task/blob/master/resources/seq_len_40.png?raw=true "seq_len=40" =640x)
+![](/resources/seq_len_40.png "seq_len=40" =640x)
 ##### Sequence length 120
-![](https://github.com/thehardwayguy/lstm_copy_task/blob/master/resources/seq_len_120.png?raw=true "seq_len=120" =1280x)
+![](/resources/seq_len_120.png "seq_len=120" =1280x)
 
 As it can be seen from the above figure, the 3-layer LSTM network was able to copy the sequence length of 10 extremely well but for sequence length of 20, errors are showing up even though the network was trained for copying sequences up to a length of 20. The errors are small and concentrated in the middle for most cases. The network does not generalise well for sequence lengths beyond 20 without training and this is inline with what the authors have observed. 
 ## Reference
