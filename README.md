@@ -12,7 +12,7 @@ To run the LSTM copy task run the following command in the terminal. This will t
 python3 LSTM_copy_task.py
 ```  
 ## Results
-Training was done up to 40 epochs which resulted in a final binary cross entropy loss of about ~0.0080. During this random sequence lengths between 1 and 20 was used and each of the sequences contained random binary vectors of size 8. The input sequence contained two extra bits to signal the start and end of the sequence making the LSTM input vector size 10.  All the extra bits are padded close a zero value like 0.001. 
+Training was done up to 40 epochs which resulted in a final binary cross entropy loss of about ~0.0080. During this, random sequence lengths between 1 and 20 was used and each of the sequences contained random binary vectors of size 8. The input sequence contained two extra bits to signal the start and end of the sequence making the LSTM input vector size 10.  All the extra bits are padded close a zero value like 0.001.
 
 Target delay was used in which the target sequence is presented only after the input sequence is completely shown. The 3-layer LSTM network implemented is a many to many (5) as shown below.
 ##### Different types of RNN implementations ([Andrej Karpathy][Andrej])
