@@ -6,14 +6,14 @@ import tensorflow as tf
 import os
 
 MODEL_NAME="lstm_copy_model.ckpt"
-MODEL_PATH="./saved_model/"+MODEL_NAME
+MODEL_PATH="./"+MODEL_NAME
 
-TRAIN_VIS_PATH="./tensor_board/"
+TRAIN_VIS_PATH="./"
 
 batch_size = 100
 stop_at = 0.0080  # End training at required loss
 
-seq_len = 20
+seq_len = 20 # Change this to change the sequence length (Kept at 20 for initial training)
 bits=8 # The actual vector size for copying task
 in_bits = bits+2 # The extra side track
 out_bits = bits 
@@ -42,8 +42,8 @@ prediction = tf.reshape(prediction_rs,[-1,act_seq_len,out_bits])
 
 print("Total Parameters: {}".format(np.sum([np.prod(v.shape) for v in tf.trainable_variables()])))
 
-# Binary cross entropy is used 
-cross_entropy = -tf.reduce_mean((target_rs * tf.log(tf.clip_by_value(prediction_rs,1e-6,0.9999)))+((1-target_rs) * tf.log(1-tf.clip_by_value(prediction_rs,1e-10,0.9999))))
+# Binary cross entropy is used as the objective
+cross_entropy = -tf.reduce_mean((target_rs * tf.log(tf.clip_by_value(prediction_rs,1e-6,0.9999)))+((1-target_rs) * tf.log(1-tf.clip_by_value(prediction_rs,1e-10,0.9999)))) # Clipped to avoid NaN
 optimizer = tf.train.RMSPropOptimizer(learning_rate=lr,momentum=m)
 grad_var_pair = optimizer.compute_gradients(loss=cross_entropy)
 capped_grads_vars = [(tf.clip_by_value(grad, -grad_clip, grad_clip),var) for grad, var in grad_var_pair]
@@ -191,4 +191,4 @@ def predictions_lstm_seq(max_seq=20,min_seq=1,in_bits=10,out_bits=8):
 if __name__ == '__main__':
 	train_lstm_seq(batch_size=batch_size,stop_at=stop_at,max_seq=seq_len,min_seq=1,in_bits=in_bits,out_bits=out_bits)
 	
-	predictions_lstm_seq(max_seq=seq_len,min_seq=1,in_bits=in_bits,out_bits=out_bits)
+	predictions_lstm_seq(max_seq=seq_len,min_seq=seq_len,in_bits=in_bits,out_bits=out_bits)
